@@ -1,1 +1,37 @@
+name: Generate Team Snakes
 
+on:
+  schedule:
+    - cron: "0 */8 * * *"
+  workflow_dispatch:
+  push:
+    branches:
+    - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - uses: Platane/snk@v3
+        with:
+          github_user_name: fraserbrownirl
+          outputs: dist/fraser-snake.svg?color_snake=1f6feb&palette=github-dark
+      
+      - uses: Platane/snk@v3
+        with:
+          github_user_name: eirlis
+          outputs: dist/eirlis-snake.svg?color_snake=7c3aed&palette=github-dark
+      
+      - uses: Platane/snk@v3
+        with:
+          github_user_name: jeefxM
+          outputs: dist/jeef-snake.svg?color_snake=059669&palette=github-dark
+          
+      - uses: crazy-max/ghaction-github-pages@v3.1.0
+        with:
+          target_branch: output
+          build_dir: dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
